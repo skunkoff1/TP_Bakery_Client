@@ -9,6 +9,7 @@
       <b-navbar-nav>
         <b-nav-item href="/">Analyses des ventes</b-nav-item>
         <b-nav-item href="/stats">Statistiques personnalisables</b-nav-item>
+        <b-nav-item href="/yearStats">Statistiques sur l'année</b-nav-item>
         <b-nav-item href="/prediction">Prediction</b-nav-item>
       </b-navbar-nav>
 
