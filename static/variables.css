@@ -1,0 +1,53 @@
+
+@import url("../static/loading.css");
+
+@font-face {
+  font-family: "Roboto";
+  src: url('../assets/fonts/Roboto-Regular.ttf') format("truetype");
+}
+
+:root {
+  --background: #f5f5f5;
+  --blue:#17a2b8 ;
+  --blue2:#73ddee ;
+  --black: #212121;
+  --purple: #7A54D6;
+  --red: #ED6876;
+  --orange: #D6A254;
+  --yellow: #E1F760;
+  /*=========== NOTIFICATION =============*/
+  --green_10: #d6ffd6;
+  --green_20: #31eb31;
+  --green_30: #00a300;
+  --green_50: #008e00;
+  --green_70: #006600;
+  --green_90: #005200;
+  --red_10: #ffd6d6;
+  --red_30: #fd3535;
+  --red_50: #fd0d0d;
+  --red_70: #bb0202;
+  --red_90: #8d0101;
+  --orange_10: #fcdfc5;
+  --orange_30: #f4a966;
+  --orange_50: #f18c33;
+  --orange_70: #ef7e1a;
+  --orange_90: #d26a0f;
+}
+
+body,
+html {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  background-color: var(--background);
+  font-family: 'Roboto';
+}
+
+
+.custom-container {
+  width: 90vw;
+  min-height: 100vh;
+  margin: auto;
+  margin-top: 30px;
+}

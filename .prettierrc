@@ -1,0 +1,5 @@
+{
+  "semi": false,
+  "singleQuote": true,
+  quote-props: ["error", "always"]
+}
