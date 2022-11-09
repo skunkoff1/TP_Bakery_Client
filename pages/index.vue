@@ -3,8 +3,12 @@
 
     <!-- HEADER -->
     <header>
-      <img src="../assets/image/boulangerie.jpg" class="head-img">
-      <h1>Compte rendu, analyse et prédiction des ventes <br>d'une chaîne de boulangerie coréenne </h1>
+      <div class="left">
+        <img src="../assets/image/boulangerie.jpg" class="head-img">
+      </div>
+      <div class="right">
+        <h1>Compte rendu, analyse et prédiction des ventes <br>d'une chaîne de boulangerie coréenne </h1>
+      </div>
     </header>
 
     <div class="para">
@@ -64,6 +68,15 @@ export default {
 header, .para {
   width: 90%;
   margin:auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left, .right {
+  width: 45%;
 }
 
 .head-img {

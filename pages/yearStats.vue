@@ -33,7 +33,9 @@
       </div>
 
       <!-- TABLEAU -->
-      <canvas id="myChart" width="400" height="400"></canvas>
+      <div class="chart-div">
+        <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
     </div>
   </div>
 </template>
@@ -49,7 +51,7 @@ export default {
                 "croque_monsieur", "mad_garlic", "milk_tea", "gateau_chocolat",
                 "pandoro", "cheese_cake", "lemon_ade", "orange_pound",
                 "wiener", "vanila_latte", "berry_ade", "tiramisu", "merinque_cookies"],
-      places: ["mag1", "mag2", "mag3", "mag4", "mag5", "mag6",
+      places: ["tous","mag1", "mag2", "mag3", "mag4", "mag5", "mag6",
               "mag7", "mag8", "mag9", "mag10", "mag11", "mag12",
               "mag13", "mag14", "mag15", "mag16", "mag17"],
       selected_product: "",
@@ -102,15 +104,10 @@ export default {
               label: 'Vente par mois',
               data: number,
               backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
+                  'rgba(0, 0, 0, 0.2)',
               ],
               borderColor: [
-                  'rgba(255, 99, 132, 1)',
+                  'rgba(0, 0, 0, 1)',
                   'rgba(54, 162, 235, 1)',
                   'rgba(255, 206, 86, 1)',
                   'rgba(75, 192, 192, 1)',
@@ -121,6 +118,7 @@ export default {
           }]
       },
       options: {
+        responsive: true,
           scales: {
               y: {
                   beginAtZero: true
@@ -184,5 +182,13 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+#myChart {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  max-height: 800px;
+  margin: auto;
 }
 </style>

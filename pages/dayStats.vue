@@ -3,7 +3,7 @@
 
     <!-- HEADER -->
     <header>
-      <h1>Statistiques personnalisables</h1>
+      <h1>Statistiques par jour</h1>
     </header>
 
     <!-- *************** DIV STATISTIQUES ********************** -->
@@ -12,19 +12,11 @@
         <div class="up">
           <div class="left">
             <div class="form-input">
-              <p>Jour</p>
-              <b-form-select class="select" v-model="selected_day" :options="days"></b-form-select>
-            </div>
-            <div class="form-input">
               <p>Produit</p>
               <b-form-select class="select" v-model="selected_product" :options="products"></b-form-select>
             </div>
           </div>
           <div class="right">
-            <div class="form-input">
-              <p>Année</p>
-              <b-form-select class="select" v-model="selected_year" :options="years"></b-form-select>
-            </div>
             <div class="form-input">
               <p>Magasin</p>
               <b-form-select class="select" v-model="selected_place" :options="places"></b-form-select>
@@ -36,14 +28,6 @@
         </div>
       </div>
 
-      <!-- RESUME -->
-      <div class="resume">
-        <p v-if="moyenne!=''">la moyenne des ventes est de : {{moyenne}}</p>
-        <p v-if="nbOfDay!=''">Nombre de jours de données : {{nbOfDay}}</p>
-        <p v-if="dayMax!=''">Journée de meilleure ventes : {{dayMax}}</p>
-        <p v-if="max!=''">vendu ce jour la : {{max}}</p>
-        <p v-if="aucun==true">Aucun {{selected_product}} vendu le {{display_day}}</p>
-      </div>
       <div v-if="loading == true" class="loading">
         <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
@@ -61,37 +45,20 @@ import Chart from 'chart.js/auto';
 export default {
   data() {
     return {
-      days: [{value:"Mon", text: "Lundi"}, {value: "Tues", text: "Mardi"},
-      {value: "Wed", text:"Mercredi"}, {value: "Thur", text: "Jeudi"},
-      {value: "Fri", text: "Vendredi"}, {value: "Sat", text: "Samedi" },
-      {value: "Sun", text: "Dimanche"}],
       products: ["tous","angbutter", "plain_bread", "jam", "americano",
                 "croissant", "caffe_latte", "tiramisu_croissant",
                 "cacao_deep", "pain_au_chocolat", "almond_croissant",
                 "croque_monsieur", "mad_garlic", "milk_tea", "gateau_chocolat",
                 "pandoro", "cheese_cake", "lemon_ade", "orange_pound",
                 "wiener", "vanila_latte", "berry_ade", "tiramisu", "merinque_cookies"],
-      years: ["2019", "2020", "all"],
-      places: ["mag1", "mag2", "mag3", "mag4", "mag5", "mag6",
+      places: ["tous","mag1", "mag2", "mag3", "mag4", "mag5", "mag6",
               "mag7", "mag8", "mag9", "mag10", "mag11", "mag12",
               "mag13", "mag14", "mag15", "mag16", "mag17"],
-      months: [{value:"01", text: "Janvier"},{value:"02", text: "Février"},{value:"03", text: "Mars"},
-                {value:"04", text: "Avril"}, {value:"05", text: "Mai"}, {value:"06", text: "Juin"},
-                {value:"07", text: "Juillet"}, {value:"08", text: "Août"}, {value:"09", text: "Septembre"},
-                {value:"10", text: "Octobre"},{value:"11", text: "Novembre"},{value:"12", text: "Décembre"}],
-      selected_day: "",
       selected_product: "",
-      selected_year: "",
       selected_place: "",
-      selected_month:"",
-      moyenne: "",
-      nbOfDay:"",
-      dayMax: "",
-      max:"",
       ctx: null,
       chart: null,
       aucun:false,
-      display_day: '',
       loading: false,
     }
   },
@@ -100,20 +67,14 @@ export default {
     async getStats() {
 
       this.loading = true;
-      this.moyenne = "";
-      this.nbOfDay = "";
-      this.dayMax = "";
-      this.max = "";
       this.aucun = false;
 
-      let day = this.selected_day;
-      let year = this.selected_year;
       let product = this.selected_product;
       let place = this.selected_place;
 
-      const body = { day, year, product, place};
+      const body = { product, place};
 
-      const request = await fetch(process.env.API_DEV + "stats", {
+      const request = await fetch(process.env.API_DEV + "getTotalDay", {
         method: "POST",
           headers: {
           'content-type': 'application/json',
@@ -123,43 +84,11 @@ export default {
 
       const response = await request.json();
       const status = request.status;
-      if(status == 200) {
-        if(response.mean == null) {
-          this.aucun = true;
-          this.loading = false;
-          switch(this.selected_day) {
-            case 'Mon':
-              this.display_day = "lundi";
-              break;
-            case 'Tues':
-              this.display_day = "mardi";
-              break;
-            case 'Wed':
-              this.display_day = "mercredi";
-              break;
-            case 'Thur':
-              this.display_day = "jeudi";
-              break;
-            case 'Fri':
-              this.display_day = "vendredi";
-              break;
-            case 'Sat':
-              this.display_day = "samedi";
-              break;
-            case 'Sun':
-              this.display_day = "dimanche";
-              break;
-          }
-        }
-        else {
-          this.moyenne = response.mean;
-          this.nbOfDay = response.nbOfDay;
-          this.dayMax = response.dayMax;
-          this.max = response.max;
-          this.loading = false;
-          this.createChart(response.number, response.date)
-        }
 
+      if(status == 200) {
+        console.log(response);
+        this.createChart(response.totalArray, response.dayArray)
+        this.loading = false;
       }
     },
     createChart(number, date) {
@@ -175,15 +104,10 @@ export default {
               label: 'Vente par jour',
               data: number,
               backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
+                  'rgba(0, 0, 0, 0.2)',
               ],
               borderColor: [
-                  'rgba(255, 99, 132, 1)',
+                  'rgba(0, 0, 0, 1)',
                   'rgba(54, 162, 235, 1)',
                   'rgba(255, 206, 86, 1)',
                   'rgba(75, 192, 192, 1)',
@@ -194,6 +118,7 @@ export default {
           }]
       },
       options: {
+        responsive: true,
           scales: {
               y: {
                   beginAtZero: true
@@ -257,12 +182,6 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-}
-
-.resume {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
 }
 
 #myChart {

@@ -6,15 +6,13 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
+      <b-navbar-nav class="ml-auto">
         <b-nav-item href="/">Analyses des ventes</b-nav-item>
         <b-nav-item href="/stats">Statistiques personnalisables</b-nav-item>
+        <b-nav-item href="/dayStats">Statistiques par jour</b-nav-item>
         <b-nav-item href="/yearStats">Statistiques sur l'année</b-nav-item>
         <b-nav-item href="/prediction">Prediction</b-nav-item>
       </b-navbar-nav>
-
-      <!-- Right aligned nav items -->
-
     </b-collapse>
   </b-navbar>
   </div>
